@@ -23,6 +23,8 @@ const testsData = [
     norm: "ITC-BT-19",
     color: "border-emerald-800 bg-emerald-950/10",
     badge: "text-emerald-400",
+    why: "¿Por qué se hace? Para asegurar que si hay una avería, la corriente de fuga tenga un camino seguro de baja resistencia hacia tierra y no a través de una persona.",
+    consequence: "Peligro de electrocución al tocar carcasas metálicas de electrodomésticos.",
   },
   {
     name: "Resistencia de Aislamiento",
@@ -33,6 +35,8 @@ const testsData = [
     norm: "ITC-BT-19 / IEC 60364",
     color: "border-yellow-800 bg-yellow-950/10",
     badge: "text-yellow-400",
+    why: "¿Por qué se hace? Para verificar que los cables no tengan 'fugas' de corriente a través de su plástico protector deteriorado.",
+    consequence: "Incendios por cortocircuitos invisibles o disparos inesperados del diferencial.",
   },
   {
     name: "Polaridad",
@@ -43,6 +47,8 @@ const testsData = [
     norm: "ITC-BT-24",
     color: "border-cyan-800 bg-cyan-950/10",
     badge: "text-cyan-400",
+    why: "¿Por qué se hace? Para que al apagar un interruptor, la lámpara o equipo se quede realmente sin tensión (seguridad en mantenimiento).",
+    consequence: "Si se corta el neutro, el equipo parece apagado pero sigue teniendo 230V internos, riesgo de descarga al cambiar una bombilla.",
   },
   {
     name: "Resistencia de Tierra",
@@ -53,6 +59,8 @@ const testsData = [
     norm: "ITC-BT-18 / UNE 20460",
     color: "border-purple-800 bg-purple-950/10",
     badge: "text-purple-400",
+    why: "¿Por qué se hace? Para garantizar que el terreno es capaz de absorber las corrientes de defecto rápidamente.",
+    consequence: "Si la tierra es mala (>37Ω), el diferencial podría no disparar a tiempo, manteniendo la tensión peligrosa en las masas.",
   },
   {
     name: "Caída de Tensión",
@@ -203,15 +211,27 @@ export default function Testing() {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="mt-4 pt-4 border-t border-slate-700/50 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-300"
+                    className="mt-4 pt-4 border-t border-slate-700/50 grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-slate-300 overflow-hidden"
                   >
-                    <div>
-                      <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">Procedimiento</div>
-                      <p className="leading-relaxed">{test.method}</p>
+                    <div className="space-y-4">
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">Procedimiento</div>
+                        <p className="leading-relaxed">{test.method}</p>
+                      </div>
+                      <div className="p-3 bg-slate-900/50 rounded-lg border border-slate-800">
+                        <div className="text-[10px] font-bold uppercase tracking-widest text-cyan-500 mb-1">¿Para qué sirve esto?</div>
+                        <p className="italic text-slate-400">{(test as any).why}</p>
+                      </div>
                     </div>
-                    <div className="bg-slate-950/50 rounded-lg p-3 border border-slate-700/40">
-                      <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">Valor Límite Reglamentario</div>
-                      <p className={`font-mono font-bold ${test.badge}`}>{test.limit}</p>
+                    <div className="space-y-4">
+                      <div className="bg-slate-950/50 rounded-lg p-3 border border-slate-700/40">
+                        <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">Valor Límite Reglamentario</div>
+                        <p className={`font-mono font-bold text-lg ${test.badge}`}>{test.limit}</p>
+                      </div>
+                      <div className="p-3 bg-red-950/10 rounded-lg border border-red-900/20">
+                        <div className="text-[10px] font-bold uppercase tracking-widest text-red-500 mb-1">Si falla (Peligro)</div>
+                        <p className="text-red-200/70">{(test as any).consequence}</p>
+                      </div>
                     </div>
                   </motion.div>
                 )}
@@ -295,6 +315,59 @@ export default function Testing() {
             </div>
           </CardContent>
         </Card>
+      </section>
+
+      {/* Errores comunes */}
+      <section className="space-y-4">
+        <h2 className="text-xl font-bold text-white border-b border-slate-800 pb-2 flex items-center gap-2">
+          <AlertTriangle className="w-5 h-5 text-orange-500" /> Errores Comunes de Diagnóstico
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card className="bg-slate-900/50 border-orange-900/30">
+            <CardContent className="p-4">
+              <div className="flex gap-3">
+                <XCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                <div className="text-sm">
+                  <div className="font-bold text-white mb-1">Medir aislamiento con equipos conectados</div>
+                  <p className="text-slate-400 text-xs">Si dejas un televisor o PC conectado al medir aislamiento, el Megger (500V) puede destruir la electrónica interna. ¡Desconecta TODO!</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-slate-900/50 border-orange-900/30">
+            <CardContent className="p-4">
+              <div className="flex gap-3">
+                <XCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                <div className="text-sm">
+                  <div className="font-bold text-white mb-1">No puentear Fase y Neutro en el Megger</div>
+                  <p className="text-slate-400 text-xs">Para medir aislamiento respecto a tierra de forma segura, se recomienda unir Fase y Neutro y medir contra el cable de Tierra para no dañar receptores olvidados.</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-slate-900/50 border-orange-900/30">
+            <CardContent className="p-4">
+              <div className="flex gap-3">
+                <XCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                <div className="text-sm">
+                  <div className="font-bold text-white mb-1">Picas de tierra demasiado cerca</div>
+                  <p className="text-slate-400 text-xs">Si las picas auxiliar y de tensión están a menos de 20m, las 'áreas de influencia' se solapan y la medida será falsa (menor de la real).</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-slate-900/50 border-orange-900/30">
+            <CardContent className="p-4">
+              <div className="flex gap-3">
+                <XCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                <div className="text-sm">
+                  <div className="font-bold text-white mb-1">Confundir Neutro con Tierra</div>
+                  <p className="text-slate-400 text-xs">Ambos pueden marcar 0V contra fase o continuidad aparente, pero el Neutro es un conductor activo y la Tierra solo de protección. Verificarlos por color y origen.</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </section>
 
       {/* Instruments */}
