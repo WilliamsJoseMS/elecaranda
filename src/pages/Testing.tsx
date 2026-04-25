@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/src/components/ui/Card";
 import { ShieldAlert, Zap, SearchCheck, ClipboardCheck, Wrench, CheckCircle2, XCircle, AlertTriangle, FileCheck2, Activity } from "lucide-react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 
 const preServiceSteps = [
   { id: 1, text: "Comprobar que los circuitos de la instalación estén desconectados (automáticos abiertos).", critical: true },
