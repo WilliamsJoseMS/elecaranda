@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"require\\('fs'\\).readFileSync\\('src/pages/Planning.tsx','utf8'\\)\")",
+      "Bash(node -e \"require\\('fs'\\).readFileSync\\('src/pages/Testing.tsx','utf8'\\)\")",
+      "Bash(node -e \"require\\('fs'\\).readFileSync\\('src/pages/Basics.tsx','utf8'\\)\")",
+      "Bash(node -e \"require\\('fs'\\).readFileSync\\('src/pages/Conductors.tsx','utf8'\\)\")"
+    ]
+  }
+}
