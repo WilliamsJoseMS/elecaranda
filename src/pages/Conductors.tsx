@@ -198,7 +198,7 @@ export default function Conductors() {
         <h2 className="text-xl font-bold text-white border-b border-slate-800 pb-2 mb-4 flex items-center gap-2">
           <Table2 className="w-5 h-5 text-emerald-400" /> Selección de Sección por Circuito (ITC-BT-25)
         </h2>
-        <p className="text-sm text-slate-400 mb-4">Secciones mínimas para electrificación básica (5.750 W). Garantiza la protección contra sobrecargas y caídas de tensión.</p>
+        <p className="text-sm text-slate-400 mb-4">Secciones mínimas y protecciones para Electrificación Básica (5.750 W) y Elevada (9.200 W) según la ITC-BT-25.</p>
         <div className="overflow-x-auto rounded-xl border border-slate-700 bg-slate-950/60">
           <table className="w-full text-sm text-left text-slate-300">
             <thead className="text-[10px] text-slate-400 uppercase bg-slate-900 border-b border-slate-700 font-mono tracking-widest">
@@ -211,19 +211,29 @@ export default function Conductors() {
             </thead>
             <tbody className="divide-y divide-slate-800/60 text-xs font-mono">
               {[
-                { circuit: "C1 — Iluminación", section: "1.5", pia: "10", use: "Lámparas, downlights, tiras LED", color: "text-yellow-400" },
-                { circuit: "C2 — Enchufes", section: "2.5", pia: "16", use: "Tomas uso general (salón, dormitorios)", color: "text-cyan-400" },
-                { circuit: "C3 — Cocina / Horno", section: "6", pia: "25", use: "Cocina eléctrica y horno. Base 25A.", color: "text-orange-400" },
-                { circuit: "C4 — Lavadora/Lavavajillas", section: "4", pia: "20", use: "Grandes electrodomésticos", color: "text-purple-400" },
-                { circuit: "C5 — Baño / Cocina aux.", section: "2.5", pia: "16", use: "Tomas húmedas", color: "text-blue-400" },
+                { circuit: "C1 — Iluminación", section: "1.5", pia: "10", use: "Lámparas, downlights, tiras LED", type: "Básica", color: "text-yellow-400" },
+                { circuit: "C2 — Enchufes", section: "2.5", pia: "16", use: "Tomas uso general (salón, dormitorios)", type: "Básica", color: "text-cyan-400" },
+                { circuit: "C3 — Cocina / Horno", section: "6", pia: "25", use: "Cocina eléctrica y horno. Base 25A.", type: "Básica", color: "text-orange-400" },
+                { circuit: "C4 — Lavadora/Lavavajillas", section: "4", pia: "20", use: "Grandes electrodomésticos (lavadora, lavavajillas, termo)", type: "Básica", color: "text-purple-400" },
+                { circuit: "C5 — Baño / Cocina aux.", section: "2.5", pia: "16", use: "Tomas húmedas y encimeras cocina", type: "Básica", color: "text-blue-400" },
+                { circuit: "C8 — Calefacción", section: "6", pia: "25", use: "Sistemas de calefacción eléctrica", type: "Elevada", color: "text-red-400" },
+                { circuit: "C9 — Aire Acondicionado", section: "6", pia: "25", use: "Sistemas de climatización", type: "Elevada", color: "text-emerald-400" },
+                { circuit: "C10 — Secadora", section: "2.5", pia: "16", use: "Secadora independiente", type: "Elevada", color: "text-pink-400" },
+                { circuit: "C11 — Domótica", section: "1.5", pia: "10", use: "Sistemas de automatización y seguridad", type: "Elevada", color: "text-indigo-400" },
+                { circuit: "C12 — Vehículo Eléctrico", section: "4 / 6", pia: "16 / 32", use: "Punto de recarga (ITC-BT-52)", type: "Elevada", color: "text-teal-400" },
               ].map((row, idx) => (
-                <tr key={idx} className="hover:bg-slate-800/30 transition-colors">
-                  <td className={`px-4 py-3 font-bold ${row.color}`}>{row.circuit}</td>
+                <tr key={idx} className="hover:bg-slate-800/30 transition-colors border-b border-slate-800/50">
+                  <td className={`px-4 py-3 font-bold ${row.color}`}>
+                    <div className="flex flex-col">
+                      <span>{row.circuit}</span>
+                      <span className={`text-[8px] uppercase tracking-tighter ${row.type === 'Elevada' ? 'text-amber-500' : 'text-slate-500'}`}>{row.type}</span>
+                    </div>
+                  </td>
                   <td className="px-4 py-3 text-center">
-                    <span className="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded font-bold text-white">{row.section}</span>
+                    <span className="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded font-bold text-white whitespace-nowrap">{row.section}</span>
                   </td>
                   <td className="px-4 py-3 text-center text-white font-bold">{row.pia}A</td>
-                  <td className="px-4 py-3 text-slate-400">{row.use}</td>
+                  <td className="px-4 py-3 text-slate-400 text-xs leading-tight">{row.use}</td>
                 </tr>
               ))}
             </tbody>
