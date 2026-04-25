@@ -162,6 +162,45 @@ export default function Conductors() {
         </div>
       </section>
 
+      {/* Diámetros comparativos */}
+      <section>
+        <h2 className="text-xl font-bold text-white border-b border-slate-800 pb-2 mb-4 flex items-center gap-2">
+          <Activity className="w-5 h-5 text-orange-400" /> Diámetros Exteriores: Estándar vs Armado
+        </h2>
+        <p className="text-sm text-slate-400 mb-4">Comparativa de diámetros exteriores aproximados (mm). Fundamental para el cálculo de ocupación de tubos y bandejas (ITC-BT-21).</p>
+        <div className="overflow-x-auto rounded-xl border border-slate-700 bg-slate-950/60">
+          <table className="w-full text-sm text-left text-slate-300">
+            <thead className="text-[10px] text-slate-400 uppercase bg-slate-900 border-b border-slate-700 font-mono tracking-widest">
+              <tr>
+                <th className="px-4 py-3">Sección (nº x mm²)</th>
+                <th className="px-4 py-3 text-center">RZ1-K (mm)</th>
+                <th className="px-4 py-3 text-center">RZ1FZ1-K / Armado (mm)</th>
+                <th className="px-4 py-3 text-center">Incremento (%)</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-800/60 text-xs font-mono">
+              {[
+                { sec: "3 x 1.5", std: 9.0, arm: 13.5 },
+                { sec: "3 x 2.5", std: 10.2, arm: 14.8 },
+                { sec: "3 x 4", std: 11.5, arm: 16.2 },
+                { sec: "3 x 6", std: 12.8, arm: 17.5 },
+                { sec: "3 x 10", std: 15.2, arm: 20.5 },
+                { sec: "4 x 16", std: 20.5, arm: 26.5 },
+                { sec: "4 x 25", std: 25.0, arm: 31.0 },
+              ].map((row, idx) => (
+                <tr key={idx} className="hover:bg-slate-800/30 transition-colors">
+                  <td className="px-4 py-3 font-bold text-slate-200">{row.sec}</td>
+                  <td className="px-4 py-3 text-center text-cyan-400">{row.std.toFixed(1)}</td>
+                  <td className="px-4 py-3 text-center text-orange-400">{row.arm.toFixed(1)}</td>
+                  <td className="px-4 py-3 text-center text-slate-500">+{(((row.arm - row.std) / row.std) * 100).toFixed(0)}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-[10px] text-slate-500 italic mt-2">Valores medios orientativos (varían según fabricante). El incremento se debe al asiento, la armadura y la doble cubierta.</p>
+      </section>
+
       <section>
         <h2 className="text-xl font-bold text-white border-b border-slate-800 pb-2 mb-4 mt-4">Clasificación CPR (Construcción)</h2>
         <p className="text-sm text-slate-400 mb-6">El Reglamento europeo CPR establece clasificaciones para los cables frente al fuego.</p>
