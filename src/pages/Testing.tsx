@@ -182,16 +182,41 @@ export default function Testing() {
         </Card>
       </section>
 
-      {/* Ensayos expandibles */}
+      {/* Ensayos expandibles con más profundidad técnica */}
       <section className="space-y-4">
-        <h2 className="text-xl font-bold text-white border-b border-slate-800 pb-2 flex items-center gap-2">
-          <ShieldAlert className="w-5 h-5 text-yellow-400" /> Ensayos Reglamentarios (ITC-BT-19)
-        </h2>
+        <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+            <ShieldAlert className="w-5 h-5 text-yellow-400" /> Ensayos Reglamentarios (ITC-BT-19)
+          </h2>
+          <span className="text-[10px] bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 px-2 py-0.5 rounded font-mono">REBT OBLIGATORIO</span>
+        </div>
+
+        {/* Tabla Técnica de Aislamiento */}
+        <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden mb-6">
+          <div className="p-3 bg-slate-800/50 text-[10px] font-bold text-slate-300 uppercase tracking-widest border-b border-slate-700">
+            Valores Mínimos de Aislamiento (REBT)
+          </div>
+          <table className="w-full text-xs text-left">
+            <thead className="bg-slate-900 text-slate-500 font-mono text-[9px] uppercase">
+              <tr>
+                <th className="px-4 py-2">Tensión Circuito (V)</th>
+                <th className="px-4 py-2">Tensión de Ensayo (Vcc)</th>
+                <th className="px-4 py-2">Resistencia Mínima (MΩ)</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-800 text-slate-300">
+              <tr className="hover:bg-slate-800/20"><td className="px-4 py-2">MBTS y MBTP</td><td className="px-4 py-2 font-mono">250</td><td className="px-4 py-2 font-bold text-emerald-400">≥ 0.25</td></tr>
+              <tr className="bg-cyan-500/5"><td className="px-4 py-2">≤ 500 V (Vivienda)</td><td className="px-4 py-2 font-mono">500</td><td className="px-4 py-2 font-bold text-emerald-400">≥ 0.5</td></tr>
+              <tr className="hover:bg-slate-800/20"><td className="px-4 py-2">&gt; 500 V</td><td className="px-4 py-2 font-mono">1000</td><td className="px-4 py-2 font-bold text-emerald-400">≥ 1.0</td></tr>
+            </tbody>
+          </table>
+        </div>
+
         <div className="space-y-3">
           {testsData.map((test) => (
             <Card
               key={test.name}
-              className={`${test.color} border cursor-pointer transition-all`}
+              className={`${test.color} border cursor-pointer transition-all hover:shadow-[0_0_20px_rgba(255,255,255,0.02)]`}
               onClick={() => setExpandedTest(expandedTest === test.name ? null : test.name)}
             >
               <CardContent className="p-4">
@@ -206,40 +231,75 @@ export default function Testing() {
                   <div className={`text-xs font-mono font-bold ${test.badge} border rounded px-2 py-0.5 border-current opacity-70`}>{test.norm}</div>
                 </div>
 
-                {expandedTest === test.name && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="mt-4 pt-4 border-t border-slate-700/50 grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-slate-300 overflow-hidden"
-                  >
-                    <div className="space-y-4">
-                      <div>
-                        <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">Procedimiento</div>
-                        <p className="leading-relaxed">{test.method}</p>
+                <AnimatePresence>
+                  {expandedTest === test.name && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="mt-4 pt-4 border-t border-slate-700/50 grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-slate-300">
+                        <div className="space-y-4">
+                          <div>
+                            <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1.5 flex items-center gap-1">
+                              <SearchCheck className="w-3 h-3" /> Procedimiento Paso a Paso
+                            </div>
+                            <ol className="list-decimal pl-4 space-y-1.5 leading-relaxed">
+                              {test.name === "Continuidad del PE" && (
+                                <>
+                                  <li>Puentear Fase y Neutro en el origen (sin tensión).</li>
+                                  <li>Medir resistencia entre Fase y Tierra en el punto más alejado.</li>
+                                  <li>Restar la resistencia de los cables de prueba (puesta a cero).</li>
+                                  <li>Verificar que el valor es inferior a 1 Ω.</li>
+                                </>
+                              )}
+                              {test.name === "Resistencia de Aislamiento" && (
+                                <>
+                                  <li>Desconectar todos los receptores (electrodomésticos).</li>
+                                  <li>Unir todos los conductores activos (Fase y Neutro).</li>
+                                  <li>Aplicar 500V CC entre la unión anterior y el conductor de tierra.</li>
+                                  <li>Mantener la tensión hasta que la lectura del Megger se estabilice.</li>
+                                </>
+                              )}
+                              {test.name === "Prueba de Diferenciales" && (
+                                <>
+                                  <li>Seleccionar la corriente de defecto (IΔn) en el tester (ej: 30mA).</li>
+                                  <li>Realizar prueba a 0º y 180º de la onda senoidal.</li>
+                                  <li>Verificar disparo en menos de 200ms (instantes) o 40ms (S).</li>
+                                  <li>Realizar prueba de rampa para ver corriente exacta de disparo.</li>
+                                </>
+                              )}
+                              {!["Continuidad del PE", "Resistencia de Aislamiento", "Prueba de Diferenciales"].includes(test.name) && (
+                                <li>{test.method}</li>
+                              )}
+                            </ol>
+                          </div>
+                          <div className="p-3 bg-slate-900/50 rounded-lg border border-slate-800">
+                            <div className="text-[10px] font-bold uppercase tracking-widest text-cyan-500 mb-1">Fundamento Técnico</div>
+                            <p className="italic text-slate-400">{(test as any).why}</p>
+                          </div>
+                        </div>
+                        <div className="space-y-4">
+                          <div className="bg-slate-950/50 rounded-lg p-3 border border-slate-700/40 relative">
+                            <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">Valor Límite Reglamentario</div>
+                            <p className={`font-mono font-black text-2xl ${test.badge}`}>{test.limit}</p>
+                            <div className="absolute top-3 right-3 text-[8px] text-slate-600 font-mono">ITC-BT-19 / 18</div>
+                          </div>
+                          <div className="p-3 bg-red-950/10 rounded-lg border border-red-900/20">
+                            <div className="text-[10px] font-bold uppercase tracking-widest text-red-500 mb-1">Riesgo si el valor es incorrecto</div>
+                            <p className="text-red-200/70 text-[11px]">{(test as any).consequence}</p>
+                          </div>
+                        </div>
                       </div>
-                      <div className="p-3 bg-slate-900/50 rounded-lg border border-slate-800">
-                        <div className="text-[10px] font-bold uppercase tracking-widest text-cyan-500 mb-1">¿Para qué sirve esto?</div>
-                        <p className="italic text-slate-400">{(test as any).why}</p>
-                      </div>
-                    </div>
-                    <div className="space-y-4">
-                      <div className="bg-slate-950/50 rounded-lg p-3 border border-slate-700/40">
-                        <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">Valor Límite Reglamentario</div>
-                        <p className={`font-mono font-bold text-lg ${test.badge}`}>{test.limit}</p>
-                      </div>
-                      <div className="p-3 bg-red-950/10 rounded-lg border border-red-900/20">
-                        <div className="text-[10px] font-bold uppercase tracking-widest text-red-500 mb-1">Si falla (Peligro)</div>
-                        <p className="text-red-200/70">{(test as any).consequence}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </CardContent>
             </Card>
           ))}
         </div>
-        <p className="text-xs text-slate-500 italic">Haz clic en cada ensayo para ver el procedimiento detallado y el valor límite reglamentario.</p>
+        <p className="text-xs text-slate-500 italic mt-4">Haz clic en cada ensayo para ver el procedimiento detallado y el valor límite reglamentario.</p>
       </section>
 
       {/* Multimeter Usage Guide - Based on pages 92-96 */}
