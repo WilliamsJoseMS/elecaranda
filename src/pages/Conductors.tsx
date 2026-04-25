@@ -209,7 +209,38 @@ export default function Conductors() {
         </div>
       </section>
 
-      {/* SECCIÓN POR CIRCUITO */}
+      {/* GALERÍA DE ESCENARIOS REALES */}
+      <section className="space-y-4">
+        <h2 className="text-xl font-bold text-white border-b border-slate-800 pb-2 flex items-center gap-2">
+          <Info className="w-5 h-5 text-cyan-400" /> Ejemplos y Escenarios Reales de Circuitos
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { id: "C1", title: "Iluminación", icon: "💡", example: "Máximo 30 puntos de luz (downlights, lámparas) por circuito.", detail: "Usa cable de 1.5mm² y PIA de 10A." },
+            { id: "C2", title: "Uso General", icon: "🔌", example: "Máximo 20 tomas de corriente (TV, cargadores, PC).", detail: "Usa cable de 2.5mm² y PIA de 16A." },
+            { id: "C3", title: "Cocina y Horno", icon: "🍳", example: "Alimenta la placa vitrocerámica y el horno eléctrico.", detail: "Sección de 6mm² para aguantar picos de 25A." },
+            { id: "C4", title: "Lavado y Termo", icon: "🧺", example: "Lavadora, lavavajillas y termo eléctrico (calentador).", detail: "Sección de 4mm² con PIA de 20A." },
+            { id: "C5", title: "Baño y Auxiliar", icon: "🚿", example: "Tomas del baño y encima de la encimera de cocina.", detail: "Protección especial para zonas húmedas (2.5mm²)." },
+            { id: "C9", title: "Climatización", icon: "❄️", example: "Unidades exteriores de aire acondicionado o Split.", detail: "Circuito independiente de 6mm² y 25A." },
+            { id: "C10", title: "Secadora", icon: "👕", example: "Toma exclusiva para secadora de ropa independiente.", detail: "Igual que C2 pero dedicado (2.5mm²)." },
+            { id: "C12", title: "Vehículo Eléctrico", icon: "🚗", example: "Punto de recarga en garaje (Wallbox).", detail: "Según longitud, puede requerir 4mm² o 6mm²." },
+          ].map((item) => (
+            <Card key={item.id} className="bg-slate-900/40 border-slate-800 hover:border-cyan-500/30 transition-all group overflow-hidden">
+              <div className="absolute top-0 right-0 p-2 text-2xl opacity-20 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500">
+                {item.icon}
+              </div>
+              <CardContent className="p-4">
+                <div className="text-cyan-500 font-black text-xl mb-1">{item.id}</div>
+                <div className="text-white font-bold text-sm mb-2">{item.title}</div>
+                <p className="text-[11px] text-slate-400 mb-3 leading-tight">{item.example}</p>
+                <div className="pt-3 border-t border-slate-800 text-[10px] text-slate-500 font-mono">
+                  {item.detail}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
       <section>
         <h2 className="text-xl font-bold text-white border-b border-slate-800 pb-2 mb-4 flex items-center gap-2">
           <Table2 className="w-5 h-5 text-emerald-400" /> Selección de Sección por Circuito (ITC-BT-25)
@@ -232,6 +263,8 @@ export default function Conductors() {
                 { circuit: "C3 — Cocina / Horno", section: "6", pia: "25", use: "Cocina eléctrica y horno. Base 25A.", type: "Básica", color: "text-orange-400" },
                 { circuit: "C4 — Lavadora/Lavavajillas", section: "4", pia: "20", use: "Grandes electrodomésticos (lavadora, lavavajillas, termo)", type: "Básica", color: "text-purple-400" },
                 { circuit: "C5 — Baño / Cocina aux.", section: "2.5", pia: "16", use: "Tomas húmedas y encimeras cocina", type: "Básica", color: "text-blue-400" },
+                { circuit: "C6 — Adicional C1", section: "1.5", pia: "10", use: "Iluminación adicional (si >30 puntos)", type: "Elevada", color: "text-yellow-600" },
+                { circuit: "C7 — Adicional C2", section: "2.5", pia: "16", use: "Enchufes adicionales (si >20 tomas)", type: "Elevada", color: "text-cyan-600" },
                 { circuit: "C8 — Calefacción", section: "6", pia: "25", use: "Sistemas de calefacción eléctrica", type: "Elevada", color: "text-red-400" },
                 { circuit: "C9 — Aire Acondicionado", section: "6", pia: "25", use: "Sistemas de climatización", type: "Elevada", color: "text-emerald-400" },
                 { circuit: "C10 — Secadora", section: "2.5", pia: "16", use: "Secadora independiente", type: "Elevada", color: "text-pink-400" },
