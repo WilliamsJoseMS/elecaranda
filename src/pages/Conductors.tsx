@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/src/components/ui/Card";
 import { motion, AnimatePresence } from "motion/react";
-import { Table2, BookMarked } from "lucide-react";
+import { Table2, BookMarked, Activity } from "lucide-react";
 
 const cableColors = [
   { type: "Fase (CA activa)", color: "bg-stone-800", bgColor: "bg-stone-100", textColor: "text-stone-800", label: "Negro", desc: "Corriente Activa" },
