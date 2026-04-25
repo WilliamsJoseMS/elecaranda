@@ -53,6 +53,22 @@ const cableColors = [
 
 export default function Conductors() {
   const [selectedCable, setSelectedCable] = useState(cableColors[0]);
+  const [calcPower, setCalcPower] = useState(3000);
+  const [calcLength, setCalcLength] = useState(20);
+  const [calcSection, setCalcSection] = useState(2.5);
+
+  const calculateCDT = () => {
+    // Formula mono: e = (2 * P * L) / (gamma * S * U)
+    // gamma for Cu at 70ºC = 48
+    const gamma = 48;
+    const U = 230;
+    const e = (2 * calcPower * calcLength) / (gamma * calcSection * U);
+    const percent = (e / U) * 100;
+    return { volts: e.toFixed(2), percent: percent.toFixed(2) };
+  };
+
+  const cdt = calculateCDT();
+  const isCdtValid = parseFloat(cdt.percent) <= 3;
 
   return (
     <div className="space-y-12 animate-in fade-in duration-500 pb-12">
@@ -304,6 +320,112 @@ export default function Conductors() {
             </tbody>
           </table>
         </div>
+      </section>
+
+      {/* CALCULADORA DE CAÍDA DE TENSIÓN */}
+      <section className="space-y-4">
+        <h2 className="text-xl font-bold text-white border-b border-slate-800 pb-2 flex items-center gap-2">
+          <Activity className="w-5 h-5 text-orange-400" /> Simulador de Caída de Tensión (CDT)
+        </h2>
+        <Card className="bg-slate-900 border-slate-800 overflow-hidden">
+          <CardContent className="p-0">
+            <div className="grid grid-cols-1 lg:grid-cols-3">
+              <div className="p-6 space-y-6 lg:col-span-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Potencia del Circuito (W)</label>
+                    <div className="relative">
+                      <input 
+                        type="range" min="100" max="9200" step="100" 
+                        value={calcPower} onChange={(e) => setCalcPower(Number(e.target.value))}
+                        className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+                      />
+                      <div className="flex justify-between mt-2 font-mono text-xs">
+                        <span className="text-slate-500">100W</span>
+                        <span className="text-cyan-400 font-bold">{calcPower}W</span>
+                        <span className="text-slate-500">9.2kW</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Longitud de Línea (m)</label>
+                    <div className="relative">
+                      <input 
+                        type="range" min="1" max="100" step="1" 
+                        value={calcLength} onChange={(e) => setCalcLength(Number(e.target.value))}
+                        className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+                      />
+                      <div className="flex justify-between mt-2 font-mono text-xs">
+                        <span className="text-slate-500">1m</span>
+                        <span className="text-cyan-400 font-bold">{calcLength}m</span>
+                        <span className="text-slate-500">100m</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Sección del Conductor (mm²)</label>
+                  <div className="flex flex-wrap gap-2">
+                    {[1.5, 2.5, 4, 6, 10, 16].map((s) => (
+                      <button
+                        key={s}
+                        onClick={() => setCalcSection(s)}
+                        className={`px-4 py-2 rounded-lg border text-xs font-mono transition-all ${
+                          calcSection === s 
+                            ? "bg-cyan-600 border-cyan-500 text-white shadow-lg shadow-cyan-500/20" 
+                            : "bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-600"
+                        }`}
+                      >
+                        {s} mm²
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-slate-950 p-6 flex flex-col justify-center items-center border-l border-slate-800 space-y-6">
+                <div className="text-center">
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Caída Estimada</div>
+                  <motion.div 
+                    key={cdt.volts}
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className={`text-4xl font-black font-mono ${isCdtValid ? "text-emerald-400" : "text-red-400"}`}
+                  >
+                    {cdt.percent}%
+                  </motion.div>
+                  <div className="text-xs text-slate-500 mt-1 font-mono">({cdt.volts} V)</div>
+                </div>
+
+                <div className="w-full space-y-2">
+                  <div className="flex justify-between text-[10px] uppercase font-bold text-slate-500">
+                    <span>Estado REBT</span>
+                    <span className={isCdtValid ? "text-emerald-500" : "text-red-500"}>
+                      {isCdtValid ? "APTO (≤ 3%)" : "NO APTO (> 3%)"}
+                    </span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <motion.div 
+                      initial={{ width: 0 }}
+                      animate={{ width: `${Math.min(parseFloat(cdt.percent) * 33.3, 100)}%` }}
+                      className={`h-full transition-colors duration-500 ${
+                        isCdtValid ? "bg-emerald-500" : "bg-red-500"
+                      }`}
+                    />
+                  </div>
+                </div>
+
+                {!isCdtValid && (
+                  <div className="flex items-center gap-2 p-3 bg-red-950/20 border border-red-900/30 rounded-lg text-[10px] text-red-300">
+                    <ShieldAlert className="w-4 h-4 shrink-0" />
+                    <span>La sección es insuficiente. Aumenta mm² o reduce la longitud para cumplir la ITC-BT-19.</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </section>
 
       {/* CPR CLASIFICACIÓN */}
