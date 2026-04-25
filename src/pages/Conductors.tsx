@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/src/components/ui/Card";
 import { motion, AnimatePresence } from "motion/react";
-import { Table2, BookMarked, Activity, Zap, ShieldCheck, Info } from "lucide-react";
+import { Table2, BookMarked, Activity, Zap, ShieldCheck, Info, ShieldAlert } from "lucide-react";
 
 const cableColors = [
   { 
