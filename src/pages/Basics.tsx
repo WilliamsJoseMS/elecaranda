@@ -307,6 +307,87 @@ export default function Basics() {
                      </div>
                   </CardContent>
                </Card>
+                <Card className="bg-slate-800/30 border-slate-700">
+                  <CardHeader className="p-4 pb-2">
+                     <CardTitle className="text-base text-purple-400">Circuito Mixto</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-4 pt-0 text-sm text-slate-400 flex flex-col md:flex-row items-center gap-4">
+                     <div className="flex-1 space-y-1">
+                        <p>Combinación de serie y paralelo en una misma instalación.</p>
+                        <ul className="text-xs list-disc pl-4 mt-2">
+                           <li>Permite agrupar cargas con comportamientos distintos.</li>
+                           <li>Complejidad media: el cálculo requiere simplificación de nudos.</li>
+                           <li>Común en equipos electrónicos y cuadros complejos.</li>
+                        </ul>
+                     </div>
+                     <div className="w-24 h-24 shrink-0 bg-slate-900 border border-slate-700 rounded-lg flex items-center justify-center p-2">
+                         <svg viewBox="0 0 100 80" className="w-full h-full stroke-purple-500 fill-none stroke-[2]">
+                            <rect x="5" y="30" width="10" height="20" />
+                            <line x1="15" y1="40" x2="25" y2="40" />
+                            <circle cx="35" cy="40" r="10" />
+                            <line x1="31" y1="36" x2="39" y2="44" /><line x1="31" y1="44" x2="39" y2="36" />
+                            <line x1="45" y1="40" x2="55" y2="40" />
+                            <line x1="55" y1="15" x2="55" y2="65" />
+                            <circle cx="70" cy="15" r="8" /><line x1="66" y1="11" x2="74" y2="19" /><line x1="66" y1="19" x2="74" y2="11" />
+                            <circle cx="70" cy="65" r="8" /><line x1="66" y1="61" x2="74" y2="69" /><line x1="66" y1="69" x2="74" y2="61" />
+                            <line x1="78" y1="15" x2="90" y2="15" /><line x1="78" y1="65" x2="90" y2="65" /><line x1="90" y1="15" x2="90" y2="65" />
+                         </svg>
+                     </div>
+                  </CardContent>
+               </Card>
+
+               <Card className="bg-slate-800/30 border-slate-700">
+                  <CardHeader className="p-4 pb-2">
+                     <CardTitle className="text-base text-yellow-500">Circuito Conmutado (2 puntos)</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-4 pt-0 text-sm text-slate-400 flex flex-col md:flex-row items-center gap-4">
+                     <div className="flex-1 space-y-1">
+                        <p>Control de un punto de luz desde dos interruptores diferentes.</p>
+                        <ul className="text-xs list-disc pl-4 mt-2">
+                           <li>Ideal para pasillos y dormitorios (puerta y cabecero).</li>
+                           <li>Usa dos interruptores conmutados unidos por dos hilos.</li>
+                           <li>El estado de la lámpara depende de la posición de ambos.</li>
+                        </ul>
+                     </div>
+                     <div className="w-24 h-24 shrink-0 bg-slate-900 border border-slate-700 rounded-lg flex items-center justify-center p-2">
+                         <svg viewBox="0 0 100 60" className="w-full h-full stroke-yellow-500 fill-none stroke-[2]">
+                            <line x1="5" y1="30" x2="15" y2="30" />
+                            <circle cx="20" cy="30" r="2" fill="currentColor" />
+                            <line x1="20" y1="30" x2="35" y2="15" strokeDasharray="2,2" />
+                            <line x1="40" y1="15" x2="60" y2="15" />
+                            <line x1="40" y1="45" x2="60" y2="45" />
+                            <circle cx="80" cy="30" r="2" fill="currentColor" />
+                            <line x1="80" y1="30" x2="65" y2="45" strokeDasharray="2,2" />
+                            <line x1="80" y1="30" x2="95" y2="30" />
+                         </svg>
+                     </div>
+                  </CardContent>
+               </Card>
+
+               <Card className="bg-slate-800/30 border-slate-700">
+                  <CardHeader className="p-4 pb-2">
+                     <CardTitle className="text-base text-red-500">Circuito de Cruzamiento (3+ puntos)</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-4 pt-0 text-sm text-slate-400 flex flex-col md:flex-row items-center gap-4">
+                     <div className="flex-1 space-y-1">
+                        <p>Control desde tres o más puntos usando un interruptor especial.</p>
+                        <ul className="text-xs list-disc pl-4 mt-2">
+                           <li>Combina 2 conmutadores en los extremos + 1 cruzamiento.</li>
+                           <li>Se puede ampliar a N puntos añadiendo más cruzamientos.</li>
+                           <li>Esquema estándar para escaleras y salones grandes.</li>
+                        </ul>
+                     </div>
+                     <div className="w-24 h-24 shrink-0 bg-slate-900 border border-slate-700 rounded-lg flex items-center justify-center p-2">
+                         <svg viewBox="0 0 100 60" className="w-full h-full stroke-red-500 fill-none stroke-[2]">
+                            <rect x="40" y="20" width="20" height="20" />
+                            <line x1="40" y1="25" x2="60" y2="35" />
+                            <line x1="40" y1="35" x2="60" y2="25" />
+                            <line x1="10" y1="30" x2="40" y2="30" />
+                            <line x1="60" y1="30" x2="90" y2="30" />
+                         </svg>
+                     </div>
+                  </CardContent>
+               </Card>
             </div>
           </section>
 
