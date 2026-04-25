@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/src/components/ui/Card";
-import { PackageOpen, Map, ClipboardList, Cable } from "lucide-react";
+import { PackageOpen, Map, ClipboardList, Cable, Box, TrendingDown, Truck, Search, QrCode, ShoppingCart, CheckSquare } from "lucide-react";
 import { motion } from "motion/react";
 
 export default function Provisioning() {
@@ -147,7 +147,108 @@ export default function Provisioning() {
           </Card>
         </section>
 
-        {/* Teoría General */}
+        {/* Dashboard de Stock en Tiempo Real (Simulación) */}
+      <section className="space-y-4">
+        <h2 className="text-xl font-bold text-white border-b border-slate-800 pb-2 flex items-center gap-2">
+          <TrendingDown className="w-5 h-5 text-orange-400" /> Control de Stock y Alertas (Simulador)
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {[
+            { item: "Cable H07Z1-K 2.5mm² (Azul)", stock: 150, unit: "m", min: 200, status: "critical" },
+            { item: "PIA 1P+N 16A (Curva C)", stock: 42, unit: "uds", min: 10, status: "ok" },
+            { item: "Tubo Corrugado 20mm", stock: 15, unit: "m", min: 50, status: "critical" },
+            { item: "Cajas Registro 100x100", stock: 8, unit: "uds", min: 20, status: "warning" },
+          ].map((item, idx) => (
+            <Card key={idx} className="bg-slate-900 border-slate-800 overflow-hidden relative">
+              <div className={`absolute top-0 left-0 w-1 h-full ${item.status === 'critical' ? 'bg-red-500' : item.status === 'warning' ? 'bg-yellow-500' : 'bg-emerald-500'}`} />
+              <CardContent className="p-4">
+                <div className="flex justify-between items-start mb-2">
+                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{item.status === 'critical' ? 'Reponer YA' : item.status === 'warning' ? 'Stock Bajo' : 'Suficiente'}</div>
+                  {item.status !== 'ok' && <TrendingDown className={`w-3 h-3 ${item.status === 'critical' ? 'text-red-400' : 'text-yellow-400'}`} />}
+                </div>
+                <div className="font-bold text-white text-sm mb-1">{item.item}</div>
+                <div className="flex items-baseline gap-1">
+                  <span className={`text-2xl font-black ${item.status === 'critical' ? 'text-red-400' : 'text-slate-200'}`}>{item.stock}</span>
+                  <span className="text-xs text-slate-500">{item.unit}</span>
+                </div>
+                <div className="mt-3 w-full bg-slate-800 h-1 rounded-full overflow-hidden">
+                  <div className={`h-full ${item.status === 'critical' ? 'bg-red-500' : item.status === 'warning' ? 'bg-yellow-500' : 'bg-emerald-500'}`} style={{ width: `${Math.min(100, (item.stock / (item.min * 1.5)) * 100)}%` }} />
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Ciclo de Aprovisionamiento */}
+      <section className="space-y-4">
+        <h2 className="text-xl font-bold text-white border-b border-slate-800 pb-2 flex items-center gap-2">
+          <Truck className="w-5 h-5 text-cyan-400" /> Flujo de Gestión de Pedidos
+        </h2>
+        <div className="bg-slate-900/50 rounded-2xl border border-slate-800 p-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            {[
+              { icon: <Search className="w-5 h-5" />, label: "Necesidad", desc: "Detección faltas" },
+              { icon: <ShoppingCart className="w-5 h-5" />, label: "Pedido", desc: "Orden de compra" },
+              { icon: <Truck className="w-5 h-5" />, label: "Logística", desc: "Transporte/Envío" },
+              { icon: <QrCode className="w-5 h-5" />, label: "Recepción", desc: "Control Albarán" },
+              { icon: <Box className="w-5 h-5" />, label: "Almacén", desc: "Ubicación SGA" },
+            ].map((step, idx, arr) => (
+              <div key={idx} className="flex flex-col md:flex-row items-center gap-4 flex-1">
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-12 h-12 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-cyan-400 mb-2 group-hover:border-cyan-500 transition-all">
+                    {step.icon}
+                  </div>
+                  <div className="text-xs font-bold text-white">{step.label}</div>
+                  <div className="text-[10px] text-slate-500">{step.desc}</div>
+                </div>
+                {idx < arr.length - 1 && (
+                  <div className="hidden md:block h-px flex-1 bg-slate-800 relative">
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 border-[4px] border-transparent border-l-slate-700" />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* picking exercise */}
+      <section className="space-y-4">
+        <h2 className="text-xl font-bold text-white border-b border-slate-800 pb-2 flex items-center gap-2">
+          <CheckSquare className="w-5 h-5 text-emerald-400" /> Ejercicio: Picking para Circuito C1 (Iluminación)
+        </h2>
+        <Card className="bg-slate-950 border-slate-800 border-dashed">
+          <CardContent className="p-6">
+            <p className="text-sm text-slate-400 mb-6">Selecciona el material necesario para montar un circuito de iluminación completo según ITC-BT-25.</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {[
+                { name: "Cable 1.5mm²", correct: true },
+                { name: "Cable 6mm²", correct: false },
+                { name: "PIA 10A", correct: true },
+                { name: "PIA 25A", correct: false },
+                { name: "Tubo 16mm", correct: true },
+                { name: "Portalámparas", correct: true },
+                { name: "Base 25A", correct: false },
+                { name: "Diferencial 40A", correct: true },
+              ].map((m, i) => (
+                <button 
+                  key={i}
+                  className="p-3 rounded-xl border border-slate-800 bg-slate-900 text-xs text-slate-400 hover:border-cyan-500/50 hover:bg-slate-800 transition-all text-left flex justify-between items-center group"
+                >
+                  {m.name}
+                  <div className="w-4 h-4 rounded border border-slate-700 group-hover:border-cyan-500/50" />
+                </button>
+              ))}
+            </div>
+            <div className="mt-6 flex justify-end">
+              <button className="bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold py-2 px-6 rounded-lg transition-all shadow-lg shadow-cyan-500/10">Validar Pedido</button>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Teoría General */}
         <Card className="bg-slate-800/30 border-slate-700">
           <CardHeader className="border-b border-slate-700 pb-3">
             <div className="flex items-center gap-3">
