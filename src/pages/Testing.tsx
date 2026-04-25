@@ -451,6 +451,93 @@ export default function Testing() {
         </Card>
       </section>
 
+      {/* Casos Prácticos de Búsqueda de Averías */}
+      <section className="space-y-4">
+        <h2 className="text-xl font-bold text-white border-b border-slate-800 pb-2 flex items-center gap-2">
+          <Wrench className="w-5 h-5 text-emerald-400" /> Casos Prácticos: Búsqueda de Averías
+        </h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {[
+            {
+              title: "El Diferencial salta aleatoriamente",
+              scenario: "El cliente informa que el diferencial salta de vez en cuando, sobre todo por las mañanas.",
+              steps: [
+                "Desconectar todos los electrodomésticos del circuito afectado.",
+                "Usar una pinza de fugas para medir la corriente en el conductor de tierra del cuadro.",
+                "Ir conectando uno a uno hasta detectar cuál eleva la fuga por encima de 15mA.",
+                "Revisar posibles humedades en tomas de corriente exteriores o cocina."
+              ],
+              solution: "Resistencia de aislamiento baja en la resistencia del termo eléctrico al calentarse.",
+              color: "cyan"
+            },
+            {
+              title: "Tensión extraña (300V - 400V) en enchufes",
+              scenario: "Varias bombillas se han fundido y el frigorífico hace un ruido extraño.",
+              steps: [
+                "Medir tensión entre Fase y Neutro en el IGA.",
+                "Si la tensión fluctúa mucho al encender cargas, sospechar del Neutro.",
+                "Verificar apriete de bornes de neutro en el cuadro y en la caja general de protección.",
+                "Avisar a la distribuidora si el fallo es externo."
+              ],
+              solution: "Neutro suelto o cortado. Provoca un desplazamiento del punto de neutro y sobretensiones en las fases menos cargadas.",
+              color: "red"
+            },
+            {
+              title: "La luz parpadea al encender el horno",
+              scenario: "Al conectar una carga de mucha potencia, la iluminación de la casa pierde intensidad.",
+              steps: [
+                "Medir caída de tensión en el cuadro principal al encender el horno.",
+                "Si la caída es >3%, revisar el apriete de los bornes del diferencial e IGA.",
+                "Comprobar si el cable de la Derivación Individual tiene la sección correcta.",
+                "Buscar puntos calientes con cámara termográfica."
+              ],
+              solution: "Borne mal apretado en el IGA que genera una resistencia de contacto y calor excesivo.",
+              color: "orange"
+            },
+            {
+              title: "El motor trifásico se calienta y vibra",
+              scenario: "Un motor de un ascensor o bomba hace mucho ruido y salta el guardamotor.",
+              steps: [
+                "Medir tensión entre las tres fases (L1-L2, L2-L3, L3-L1).",
+                "Medir intensidad en cada fase con pinza amperimétrica.",
+                "Si falta una fase, revisar fusibles o contactos del contactor.",
+                "Verificar continuidad de los bobinados del motor."
+              ],
+              solution: "Fallo de una fase por un contacto fogueado en el contactor principal.",
+              color: "purple"
+            }
+          ].map((caso, idx) => (
+            <Card key={idx} className="bg-slate-900 border-slate-800 overflow-hidden group hover:border-emerald-500/30 transition-all">
+              <div className={`h-1 w-full bg-${caso.color}-500/50`} />
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-bold text-white">{caso.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="bg-slate-950/50 p-3 rounded-lg border border-slate-800">
+                  <div className="text-[10px] font-bold text-slate-500 uppercase mb-1">Escenario</div>
+                  <p className="text-xs text-slate-300 italic">"{caso.scenario}"</p>
+                </div>
+                <div className="space-y-2">
+                  <div className="text-[10px] font-bold text-emerald-500 uppercase">Protocolo de búsqueda</div>
+                  <ul className="space-y-1">
+                    {caso.steps.map((step, sidx) => (
+                      <li key={sidx} className="text-[11px] text-slate-400 flex gap-2">
+                        <span className="text-emerald-500 font-bold">{sidx + 1}.</span>
+                        {step}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="pt-3 border-t border-slate-800">
+                  <div className="text-[10px] font-bold text-cyan-500 uppercase mb-1">Diagnóstico Final</div>
+                  <p className="text-xs text-slate-200 font-medium">{caso.solution}</p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
       {/* Flujo del protocolo */}
       <section>
         <h2 className="text-xl font-bold text-white border-b border-slate-800 pb-2 mb-4">Flujo del Protocolo de Puesta en Servicio</h2>
