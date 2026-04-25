@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/src/components/ui/Card";
 import { Button } from "@/src/components/ui/Button";
-import { CheckCircle2, XCircle } from "lucide-react";
+import { CheckCircle2, XCircle, Clock, AlertCircle } from "lucide-react";
 
 // Banco de preguntas expandido (se seleccionarán 10 aleatorias para cada intento)
 const allQuestions = [
@@ -249,15 +249,76 @@ const allQuestions = [
     explanation: "Estos precios unidos entre sí configuran conceptos mayores (partidas o unidades de obra) identificando coste por hora o por material base."
   },
   {
-    question: "¿Qué normativa establece las exigencias que deben cumplir los edificios para satisfacer los requisitos básicos de seguridad y habitabilidad?",
-    options: [
-      "Reglamento Electrotécnico para Baja Tensión (REBT)",
-      "Código Técnico de la Edificación (CTE)",
-      "Ley 21/2013",
-      "Reglamento sobre normas CPR"
-    ],
+    question: "Una vivienda unifamiliar con una potencia prevista de 40 kW requerirá para su legalización:",
+    options: ["Memoria Técnica de Diseño (MTD)", "Proyecto Técnico firmado por técnico competente", "Únicamente el Certificado de Instalación", "No requiere documentación especial"],
     answer: 1,
-    explanation: "El Código Técnico de la Edificación (CTE) es el marco que rige las condiciones constructivas, habitabilidad, e interrelación con sus instalaciones."
+    explanation: "Según la ITC-BT-04, las viviendas unifamiliares con potencia superior a 10 kW requieren la elaboración de un Proyecto Técnico."
+  },
+  {
+    question: "¿Qué requisito es obligatorio para que una empresa pueda actuar como instaladora autorizada?",
+    options: ["Tener la capacitación para emitir certificados de cualquier instalación ajena", "Tener suscrito un seguro de responsabilidad civil", "Ser fabricante de cuadros eléctricos", "Tener más de 50 empleados"],
+    answer: 1,
+    explanation: "Las empresas instaladoras deben contar con un seguro de responsabilidad civil que cubra los posibles daños a terceros."
+  },
+  {
+    question: "¿En qué documento se debe cumplimentar oficialmente la Memoria Técnica de Diseño (MTD)?",
+    options: ["En hojas en blanco con el sello de la empresa", "En el impreso del Ministerio de Industria", "En los impresos oficiales determinados por la Comunidad Autónoma", "En el pliego de condiciones del proyecto"],
+    answer: 2,
+    explanation: "La MTD se realiza sobre modelos normalizados proporcionados por el órgano competente de cada Comunidad Autónoma."
+  },
+  {
+    question: "¿Qué documentación técnica mínima debe contener obligatoriamente un esquema unifilar?",
+    options: ["El Proyecto Técnico", "La Memoria Técnica de Diseño (MTD)", "Tanto el Proyecto como la MTD deben incluirlo", "Solo el pliego de condiciones"],
+    answer: 2,
+    explanation: "El esquema unifilar es una pieza fundamental tanto en el Proyecto Técnico como en la MTD."
+  },
+  {
+    question: "¿Cómo se mide generalmente el poder aislante de un conductor según los manuales técnicos?",
+    options: ["Amperios / Ohmios", "Ohmios / Voltio", "Voltios / Amperios", "Vatios / metro"],
+    answer: 1,
+    explanation: "Tradicionalmente, en algunos contextos didácticos se expresa la calidad del aislamiento en Ohmios por Voltio de tensión de servicio."
+  },
+  {
+    question: "En una instalación de baja tensión, ¿cuál es la función reglamentaria del cable de color azul?",
+    options: ["Fase", "Protección (Tierra)", "Neutro", "Retorno de pulsador"],
+    answer: 2,
+    explanation: "El color azul claro está reservado exclusivamente para el conductor de neutro."
+  },
+  {
+    question: "¿En qué unidades se expresa normativamente la sección de los conductores eléctricos?",
+    options: ["Metros", "Milímetros", "Milímetros cuadrados (mm²)", "Pulgadas"],
+    answer: 2,
+    explanation: "La sección transversal del cobre se mide siempre en milímetros cuadrados."
+  },
+  {
+    question: "¿Es reglamentario el uso de tubo rígido de PVC en instalaciones domésticas?",
+    options: ["No, solo se permite acero roscado", "No, el PVC es solo para evacuación de agua", "Sí, es muy empleado tanto en superficie como empotrado", "Solo en instalaciones subterráneas"],
+    answer: 2,
+    explanation: "El tubo de PVC es el material estándar por su aislamiento, durabilidad y facilidad de montaje."
+  },
+  {
+    question: "Un cable 'unipolar' se define como aquel que:",
+    options: ["Tiene varios conductores aislados entre sí", "Es tipo manguera con cubierta", "Está formado por un solo conductor rígido o flexible", "Solo transmite corriente continua"],
+    answer: 2,
+    explanation: "Los cables unipolares constan de un único conductor con su correspondiente aislamiento."
+  },
+  {
+    question: "¿Qué indica la designación 'Z1' en el aislamiento de un cable?",
+    options: ["Policloruro de vinilo (PVC)", "Elastómero termoestable", "Poliolefina termoplástica libre de halógenos", "Polietileno reticulado"],
+    answer: 2,
+    explanation: "Z1 identifica materiales con baja emisión de humos y gases corrosivos, fundamentales en locales de pública concurrencia."
+  },
+  {
+    question: "¿Qué diferencia principal hay entre el aislamiento de PVC y el de EPR?",
+    options: ["El PVC es termoplástico y el EPR es termoestable", "El PVC solo se usa en aluminio", "El EPR es termoplástico", "No hay diferencia técnica"],
+    answer: 0,
+    explanation: "Los materiales termoestables (EPR/XLPE) aguantan mayores temperaturas de servicio (90°C) que los termoplásticos (PVC, 70°C)."
+  },
+  {
+    question: "¿Cuál de estas secciones es una sección normalizada según el REBT?",
+    options: ["3 mm²", "4 mm²", "5 mm²", "20 mm²"],
+    answer: 1,
+    explanation: "Las secciones estándar en España saltan de 2.5 a 4, luego 6, 10, 16, etc."
   },
   {
     question: "En el método CPM, si una tarea tiene una holgura (H) igual a cero, significa que:",
@@ -298,6 +359,114 @@ const allQuestions = [
     options: ["< 20 ms", "< 200 ms", "< 500 ms", "< 1 segundo"],
     answer: 1,
     explanation: "La normativa exige que un diferencial de alta sensibilidad (30mA) dispare en menos de 200ms para garantizar la seguridad de las personas."
+  },
+  {
+    question: "Una vivienda unifamiliar con una potencia prevista de 40 kW requerirá para su legalización:",
+    options: ["Memoria Técnica de Diseño (MTD)", "Proyecto Técnico firmado por técnico competente", "Únicamente el Certificado de Instalación", "No requiere documentación especial"],
+    answer: 1,
+    explanation: "Según la ITC-BT-04, las viviendas unifamiliares con potencia superior a 10 kW requieren la elaboración de un Proyecto Técnico."
+  },
+  {
+    question: "¿Qué requisito es obligatorio para que una empresa pueda actuar como instaladora autorizada?",
+    options: ["Tener la capacitación para emitir certificados de cualquier instalación ajena", "Tener suscrito un seguro de responsabilidad civil", "Ser fabricante de cuadros eléctricos", "Tener más de 50 empleados"],
+    answer: 1,
+    explanation: "Las empresas instaladoras deben contar con un seguro de responsabilidad civil que cubra los posibles daños a terceros."
+  },
+  {
+    question: "¿En qué documento se debe cumplimentar oficialmente la Memoria Técnica de Diseño (MTD)?",
+    options: ["En hojas en blanco con el sello de la empresa", "En el impreso del Ministerio de Industria", "En los impresos oficiales determinados por la Comunidad Autónoma", "En el pliego de condiciones del proyecto"],
+    answer: 2,
+    explanation: "La MTD se realiza sobre modelos normalizados proporcionados por el órgano competente de cada Comunidad Autónoma."
+  },
+  {
+    question: "¿Cómo se mide generalmente el poder aislante de un conductor según los manuales técnicos de Aranda?",
+    options: ["Amperios / Ohmios", "Ohmios / Voltio", "Voltios / Amperios", "Vatios / metro"],
+    answer: 1,
+    explanation: "Tradicionalmente, en algunos contextos didácticos se expresa la calidad del aislamiento en Ohmios por Voltio de tensión de servicio."
+  },
+  {
+    question: "¿En qué unidades se expresa normativamente la sección de los conductores eléctricos?",
+    options: ["Metros", "Milímetros", "Milímetros cuadrados (mm²)", "Pulgadas"],
+    answer: 2,
+    explanation: "La sección transversal del cobre se mide siempre en milímetros cuadrados (mm²)."
+  },
+  {
+    question: "¿Es reglamentario el uso de tubo rígido de PVC en instalaciones domésticas?",
+    options: ["No, solo se permite acero roscado", "No, el PVC es solo para evacuación de agua", "Sí, es muy empleado tanto en superficie como empotrado", "Solo en instalaciones subterráneas"],
+    answer: 2,
+    explanation: "El tubo de PVC es el material estándar por su aislamiento, durabilidad y facilidad de montaje."
+  },
+  {
+    question: "Un cable 'unipolar' se define como aquel que:",
+    options: ["Tiene varios conductores aislados entre sí", "Es tipo manguera con cubierta", "Está formado por un solo conductor rígido o flexible", "Solo transmite corriente continua"],
+    answer: 2,
+    explanation: "Los cables unipolares constan de un único conductor con su correspondiente aislamiento."
+  },
+  {
+    question: "¿Qué indica la designación 'Z1' en el aislamiento de un cable?",
+    options: ["Policloruro de vinilo (PVC)", "Elastómero termoestable", "Poliolefina termoplástica libre de halógenos", "Polietileno reticulado"],
+    answer: 2,
+    explanation: "Z1 identifica materiales con baja emisión de humos y gases corrosivos (LSZH), fundamentales en locales de pública concurrencia."
+  },
+  {
+    question: "¿Qué diferencia principal hay entre el aislamiento de PVC y el de EPR?",
+    options: ["El PVC es termoplástico y el EPR es termoestable", "El PVC solo se usa en aluminio", "El EPR es termoplástico", "No hay diferencia técnica"],
+    answer: 0,
+    explanation: "Los materiales termoestables (EPR/XLPE) aguantan mayores temperaturas de servicio (90°C) que los termoplásticos (PVC, 70°C)."
+  },
+  {
+    question: "¿Para qué se utiliza principalmente el calibre o pie de rey en el montaje eléctrico?",
+    options: ["Para medir la escala de un plano", "Para obtener una apreciación de décimas de milímetro o menos en piezas pequeñas", "Para calibrar los punteros láser", "Para medir la profundidad de las rozas"],
+    answer: 1,
+    explanation: "El pie de rey es fundamental para medir diámetros de cables, tornillos y pequeñas piezas con alta precisión."
+  },
+  {
+    question: "¿Con qué herramienta se debe replantear la correcta nivelación de las canalizaciones en superficie?",
+    options: ["Con un escalímetro", "Con un nivel de burbuja", "Con un flexómetro", "Con un teodolito"],
+    answer: 1,
+    explanation: "El nivel de burbuja garantiza que tubos y canaletas queden perfectamente horizontales o verticales."
+  },
+  {
+    question: "¿Qué instrumento se utiliza para medir ángulos con gran precisión en el replanteo de grandes obras?",
+    options: ["El pie de rey", "El escalímetro digital", "El teodolito", "El goniómetro simple"],
+    answer: 2,
+    explanation: "El teodolito permite medir ángulos verticales y horizontales con precisión de segundos."
+  },
+  {
+    question: "¿Cuál de las siguientes es una herramienta administrativa fundamental para planear la ejecución de la obra?",
+    options: ["Un pelacables automático", "Un cronograma de obra (Gantt)", "Una hoja de pedido", "Un albarán de entrega"],
+    answer: 1,
+    explanation: "El cronograma permite visualizar la secuencia de tareas y los plazos de ejecución del proyecto."
+  },
+  {
+    question: "Los materiales como yeso, ladrillos o señalización de seguridad se denominan:",
+    options: ["Materiales compuestos", "Costes indirectos", "Materiales auxiliares", "Stock de seguridad"],
+    answer: 2,
+    explanation: "Los materiales auxiliares son necesarios para completar la instalación pero no forman parte de los circuitos eléctricos."
+  },
+  {
+    question: "En el control de recepción de material, ¿qué se debe realizar sobre los productos según exija la reglamentación?",
+    options: ["Un marcado para identificarlos", "Ensayos de comprobación", "Solo una inspección visual", "Ninguna es correcta"],
+    answer: 1,
+    explanation: "Para garantizar la calidad, se deben realizar ensayos de comprobación sobre los materiales que así lo exija la normativa."
+  },
+  {
+    question: "En la planificación de una obra, si tras una actualización del cronograma detectamos una 'holgura negativa' en la ruta crítica, esto indica que:",
+    options: ["El proyecto va adelantado", "El proyecto terminará exactamente en fecha", "El proyecto lleva un retraso respecto a la fecha de finalización impuesta", "Hay un error en el cálculo del coste"],
+    answer: 2,
+    explanation: "La holgura negativa surge cuando la fecha de finalización calculada es posterior a la fecha límite exigida para el proyecto."
+  },
+  {
+    question: "¿Qué sistema de gestión informática es el estándar para asegurar la trazabilidad y control de stock en un almacén profesional?",
+    options: ["ERP genérico", "SGA (Sistema de Gestión de Almacén)", "Hoja de cálculo simple", "Base de datos de proveedores"],
+    answer: 1,
+    explanation: "El SGA permite el control preciso de ubicaciones, entradas, salidas y trazabilidad mediante códigos de barras o RFID."
+  },
+  {
+    question: "Según la ITC-BT-25, ¿cuál es el calibre del interruptor automático (PIA) y la sección de cable para el circuito C3 (Cocina/Horno)?",
+    options: ["16A y 2.5 mm²", "20A y 4 mm²", "25A y 6 mm²", "40A y 10 mm²"],
+    answer: 2,
+    explanation: "El circuito C3 es de los más potentes en una vivienda, requiriendo 25A de protección y 6 mm² de sección."
   }
 ];
 
@@ -307,6 +476,18 @@ export default function Quiz() {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(300); // 5 minutos en segundos
+  const [isTimeUp, setIsTimeUp] = useState(false);
+
+  // Sistema de temporizador
+  useEffect(() => {
+    if (timeLeft > 0 && currentQuestion < questions.length && questions.length > 0) {
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (timeLeft === 0 && currentQuestion < questions.length) {
+      setIsTimeUp(true);
+    }
+  }, [timeLeft, currentQuestion, questions.length]);
 
   // Escoger 10 preguntas aleatorias al iniciar
   useEffect(() => {
@@ -320,6 +501,8 @@ export default function Quiz() {
     setSelectedOption(null);
     setShowResult(false);
     setScore(0);
+    setTimeLeft(300);
+    setIsTimeUp(false);
   };
 
   const handleSelect = (index: number) => {
@@ -343,7 +526,7 @@ export default function Quiz() {
 
   if (questions.length === 0) return null;
 
-  if (currentQuestion >= questions.length) {
+  if (currentQuestion >= questions.length || isTimeUp) {
     return (
       <div className="max-w-2xl mx-auto mt-20 animate-in fade-in duration-500">
         <Card className="text-center p-8 bg-slate-900 border-none shadow-[0_0_50px_rgba(6,182,212,0.15)] relative overflow-hidden backdrop-blur-md">
@@ -352,19 +535,29 @@ export default function Quiz() {
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-slate-800/50 rounded-full blur-[80px] pointer-events-none" />
           
           <CardHeader className="relative z-10">
-            <CardTitle className="text-4xl mb-4 text-white font-bold tracking-tight">¡Evaluación Completada!</CardTitle>
+            {isTimeUp && (
+              <div className="flex justify-center mb-4">
+                <div className="bg-red-500/20 text-red-400 px-4 py-2 rounded-full flex items-center gap-2 border border-red-500/30 text-sm font-bold animate-bounce">
+                  <AlertCircle className="w-4 h-4" /> ¡TIEMPO AGOTADO!
+                </div>
+              </div>
+            )}
+            <CardTitle className="text-4xl mb-4 text-white font-bold tracking-tight">
+              {isTimeUp ? "Evaluación Interrumpida" : "¡Evaluación Completada!"}
+            </CardTitle>
           </CardHeader>
           <CardContent className="relative z-10">
             <div className="text-6xl mb-6 font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 drop-shadow-sm">
               {score} <span className="text-4xl text-slate-500">/ {questions.length}</span>
             </div>
             <p className="text-xl text-slate-300 mb-8 font-medium">
-              {score === questions.length ? "¡Excelente! Eres un experto." : 
+              {isTimeUp ? "No te preocupes, puedes volver a intentarlo para mejorar tu tiempo." :
+               score === questions.length ? "¡Excelente! Eres un experto." : 
                score >= questions.length * 0.7 ? "¡Buen trabajo! Has entendido los conceptos clave." : 
                "Te recomendamos repasar los módulos de teoría e intentarlo de nuevo."}
             </p>
             <Button onClick={generateQuiz} size="lg" className="px-8 font-bold text-base shadow-[0_0_20px_rgba(6,182,212,0.3)]">
-              Realizar nueva evaluación (Preguntas diferentes)
+              Realizar nueva evaluación (Reiniciar tiempo)
             </Button>
           </CardContent>
         </Card>
@@ -376,13 +569,22 @@ export default function Quiz() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-8 animate-in slide-in-from-bottom-4 duration-500">
-      <div>
-        <nav className="text-xs text-cyan-500 font-mono mb-1 uppercase tracking-widest">Autoevaluación Dinámica</nav>
-        <h1 className="text-3xl font-bold tracking-tight text-white">Prueba de Conocimientos</h1>
-        <p className="mt-2 text-slate-400 text-sm font-bold uppercase tracking-widest flex items-center gap-2">
-          <span className="w-2 h-2 bg-cyan-400 rounded-full" />
-          Pregunta {currentQuestion + 1} <span className="text-slate-600">de {questions.length}</span>
-        </p>
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <nav className="text-xs text-cyan-500 font-mono mb-1 uppercase tracking-widest">Autoevaluación Dinámica</nav>
+          <h1 className="text-3xl font-bold tracking-tight text-white">Prueba de Conocimientos</h1>
+          <p className="mt-2 text-slate-400 text-sm font-bold uppercase tracking-widest flex items-center gap-2">
+            <span className="w-2 h-2 bg-cyan-400 rounded-full" />
+            Pregunta {currentQuestion + 1} <span className="text-slate-600">de {questions.length}</span>
+          </p>
+        </div>
+        
+        <div className={`flex items-center gap-3 px-4 py-2 rounded-2xl border backdrop-blur-md transition-all ${timeLeft < 60 ? "bg-red-500/10 border-red-500/50 text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.2)]" : "bg-slate-800/50 border-slate-700 text-slate-300"}`}>
+          <Clock className={`w-5 h-5 ${timeLeft < 60 ? "animate-pulse" : ""}`} />
+          <div className="font-mono text-xl font-black tracking-tighter">
+            {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
+          </div>
+        </div>
       </div>
 
       <div className="w-full bg-slate-900 border border-slate-800 p-1 flex h-3 rounded-full overflow-hidden shadow-inner">
