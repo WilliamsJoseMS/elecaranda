@@ -1,10 +1,41 @@
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/src/components/ui/Card";
-import { PackageOpen, Map, ClipboardList, Cable, Box, TrendingDown, Truck, Search, QrCode, ShoppingCart, CheckSquare } from "lucide-react";
+import { PackageOpen, Map, ClipboardList, Cable, Box, TrendingDown, Truck, Search, QrCode, ShoppingCart, CheckSquare, CheckCircle2, XCircle } from "lucide-react";
 import { motion } from "motion/react";
 
 export default function Provisioning() {
   const [activeZone, setActiveZone] = useState<string | null>(null);
+  const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
+  const [showResult, setShowResult] = useState(false);
+
+  const materials = [
+    { name: "Cable 1.5mm²", correct: true },
+    { name: "Cable 6mm²", correct: false },
+    { name: "PIA 10A", correct: true },
+    { name: "PIA 25A", correct: false },
+    { name: "Tubo 16mm", correct: true },
+    { name: "Portalámparas", correct: true },
+    { name: "Base 25A", correct: false },
+    { name: "Diferencial 40A", correct: true },
+  ];
+
+  const toggleMaterial = (name: string) => {
+    setShowResult(false);
+    setSelectedMaterials(prev => 
+      prev.includes(name) ? prev.filter(m => m !== name) : [...prev, name]
+    );
+  };
+
+  const validatePicking = () => {
+    setShowResult(true);
+  };
+
+  const isCorrect = () => {
+    const correctOnes = materials.filter(m => m.correct).map(m => m.name);
+    const selectedCorrect = selectedMaterials.every(m => correctOnes.includes(m));
+    const allCorrectSelected = correctOnes.every(m => selectedMaterials.includes(m));
+    return selectedCorrect && allCorrectSelected;
+  };
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500 pb-10">
@@ -222,27 +253,51 @@ export default function Provisioning() {
           <CardContent className="p-6">
             <p className="text-sm text-slate-400 mb-6">Selecciona el material necesario para montar un circuito de iluminación completo según ITC-BT-25.</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {[
-                { name: "Cable 1.5mm²", correct: true },
-                { name: "Cable 6mm²", correct: false },
-                { name: "PIA 10A", correct: true },
-                { name: "PIA 25A", correct: false },
-                { name: "Tubo 16mm", correct: true },
-                { name: "Portalámparas", correct: true },
-                { name: "Base 25A", correct: false },
-                { name: "Diferencial 40A", correct: true },
-              ].map((m, i) => (
+              {materials.map((m, i) => (
                 <button 
                   key={i}
-                  className="p-3 rounded-xl border border-slate-800 bg-slate-900 text-xs text-slate-400 hover:border-cyan-500/50 hover:bg-slate-800 transition-all text-left flex justify-between items-center group"
+                  onClick={() => toggleMaterial(m.name)}
+                  className={`p-3 rounded-xl border transition-all text-left flex justify-between items-center group ${
+                    selectedMaterials.includes(m.name)
+                      ? "border-cyan-500 bg-cyan-500/10 text-cyan-200"
+                      : "border-slate-800 bg-slate-900 text-slate-400 hover:border-slate-700 hover:bg-slate-800"
+                  }`}
                 >
-                  {m.name}
-                  <div className="w-4 h-4 rounded border border-slate-700 group-hover:border-cyan-500/50" />
+                  <span className="text-xs">{m.name}</span>
+                  <div className={`w-4 h-4 rounded border flex items-center justify-center ${
+                    selectedMaterials.includes(m.name) ? "border-cyan-400 bg-cyan-400" : "border-slate-700 group-hover:border-slate-500"
+                  }`}>
+                    {selectedMaterials.includes(m.name) && <CheckCircle2 className="w-3 h-3 text-slate-900" />}
+                  </div>
                 </button>
               ))}
             </div>
-            <div className="mt-6 flex justify-end">
-              <button className="bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold py-2 px-6 rounded-lg transition-all shadow-lg shadow-cyan-500/10">Validar Pedido</button>
+            <div className="mt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="flex-1">
+                {showResult && (
+                  <motion.div 
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className={`flex items-center gap-2 p-2 rounded-lg border text-xs ${
+                      isCorrect() 
+                        ? "bg-emerald-950/30 border-emerald-800 text-emerald-400" 
+                        : "bg-red-950/30 border-red-800 text-red-400"
+                    }`}
+                  >
+                    {isCorrect() 
+                      ? <><CheckCircle2 className="w-4 h-4" /> ¡Perfecto! Has preparado el kit correcto para el C1.</>
+                      : <><XCircle className="w-4 h-4" /> El kit es incorrecto. Revisa las secciones o el PIA.</>
+                    }
+                  </motion.div>
+                )}
+              </div>
+              <button 
+                onClick={validatePicking}
+                disabled={selectedMaterials.length === 0}
+                className="w-full md:w-auto bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-bold py-2 px-6 rounded-lg transition-all shadow-lg shadow-cyan-500/10"
+              >
+                Validar Pedido
+              </button>
             </div>
           </CardContent>
         </Card>
