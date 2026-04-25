@@ -140,6 +140,7 @@ export default function Conductors() {
             { code: "VV 0.6/1kV", breakdown: [["V", "Aislamiento PVC"], ["V", "Cubierta PVC"], ["0.6/1kV", "Tensión asignada"], ["—", "Conductor rígido"]], use: "Uso general en canalizaciones protegidas. Menor coste, no libre de halógenos. No usar en pública concurrencia.", color: "border-slate-700 bg-slate-800/20" },
             { code: "RVFV 0.6/1kV", breakdown: [["R", "Polietileno reticulado"], ["V", "PVC (cubierta asiento)"], ["F", "Flejes de acero (ARMADURA)"], ["V", "PVC (cubierta exterior)"]], use: "Cable armado con flejes de acero. Alta protección contra roedores y golpes. Instalaciones enterradas.", color: "border-orange-700 bg-orange-950/10" },
             { code: "RZ1FZ1-K", breakdown: [["R", "Reticulado (XLPE)"], ["Z1", "Libre de halógenos"], ["F", "Hilos de acero (ARMADURA)"], ["Z1", "Libre de halógenos"]], use: "Cable armado libre de halógenos. Máxima protección mecánica y seguridad frente al fuego. Pública concurrencia.", color: "border-blue-700 bg-blue-950/10" },
+            { code: "RVMV 0.6/1kV", breakdown: [["R", "Polietileno reticulado"], ["V", "PVC (asiento)"], ["M", "Hilos de acero (ARMADURA)"], ["V", "PVC (cubierta)"]], use: "Armadura de corona de hilos de acero (M). Ofrece gran resistencia a la tracción y protección mecánica superior a los flejes.", color: "border-slate-600 bg-slate-800/40" },
           ].map((cable) => (
             <Card key={cable.code} className={`${cable.color} border`}>
               <CardContent className="pt-4 pb-4 px-5">
