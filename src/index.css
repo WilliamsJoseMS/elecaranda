@@ -1,1 +1,40 @@
 @import "tailwindcss";
+
+@theme {
+  --color-millionaire-navy: #0a0a2e;
+  --color-millionaire-gold: #ffcc00;
+  --color-millionaire-cyan: #00ffff;
+  --color-millionaire-blue: #1e1e6e;
+}
+
+@layer base {
+  body {
+    background: radial-gradient(circle at center, #0a0a2e 0%, #000000 100%);
+    @apply text-white min-h-screen;
+  }
+}
+
+@layer components {
+  .hexagon-button {
+    clip-path: polygon(5% 0%, 95% 0%, 100% 50%, 95% 100%, 5% 100%, 0% 50%);
+    @apply relative overflow-hidden transition-all duration-300;
+  }
+
+  .hexagon-border {
+    clip-path: polygon(5% 0%, 95% 0%, 100% 50%, 95% 100%, 5% 100%, 0% 50%);
+    padding: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-millionaire-cyan), transparent);
+  }
+
+  .millionaire-ladder-item {
+    @apply flex items-center justify-between px-4 py-1 text-sm font-bold transition-all;
+  }
+
+  .millionaire-ladder-item.active {
+    @apply bg-orange-500 text-white shadow-[0_0_15px_rgba(249,115,22,0.5)];
+  }
+
+  .millionaire-ladder-item.reached {
+    @apply text-orange-400;
+  }
+}
