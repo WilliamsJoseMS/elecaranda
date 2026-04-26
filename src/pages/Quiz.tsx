@@ -239,7 +239,7 @@ export default function Quiz() {
   const [selectedOpt, setSelectedOpt] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(300);
+  const [timeLeft, setTimeLeft] = useState(60);
   const [isGameOver, setIsGameOver] = useState(false);
   const [mistakes, setMistakes] = useState(0);
   const [lifelines, setLifelines] = useState({ fiftyFifty: true, skip: true });
@@ -269,7 +269,7 @@ export default function Quiz() {
     setIsAnswered(false);
     setScore(0);
     setMistakes(0);
-    setTimeLeft(300);
+    setTimeLeft(60);
     setIsGameOver(false);
     setLifelines({ fiftyFifty: true, skip: true });
     setHiddenOptions([]);
@@ -280,13 +280,19 @@ export default function Quiz() {
   }, [generateQuiz]);
 
   useEffect(() => {
-    if (timeLeft > 0 && !isGameOver && questions.length > 0) {
+    if (timeLeft > 0 && !isGameOver && questions.length > 0 && !isAnswered) {
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
       return () => clearTimeout(timer);
-    } else if (timeLeft === 0) {
-      setIsGameOver(true);
+    } else if (timeLeft === 0 && !isAnswered) {
+      // Si se acaba el tiempo, cuenta como error
+      if (mistakes === 0) {
+        setMistakes(1);
+        setIsAnswered(true);
+      } else {
+        setIsGameOver(true);
+      }
     }
-  }, [timeLeft, isGameOver, questions.length]);
+  }, [timeLeft, isGameOver, questions.length, isAnswered, mistakes]);
 
   const handleSelect = (idx: number) => {
     if (isAnswered || hiddenOptions.includes(idx)) return;
@@ -316,6 +322,7 @@ export default function Quiz() {
       setSelectedOpt(null);
       setIsAnswered(false);
       setHiddenOptions([]);
+      setTimeLeft(60); // Reiniciar cronómetro para la nueva pregunta
     }
   };
 
@@ -444,15 +451,25 @@ export default function Quiz() {
               </motion.div>
             ) : (
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col items-center gap-6">
-                <div className={`p-4 rounded-2xl max-w-2xl text-center border-2 ${selectedOpt === q.answer ? "bg-green-950/40 border-green-500 text-green-200" : "bg-red-950/40 border-red-500 text-red-200"}`}>
-                  <p className="font-bold mb-2 uppercase tracking-widest text-xs">
-                    {selectedOpt === q.answer ? "Explicación Técnica" : mistakes === 1 && score === currentIdx ? "¡CUIDADO! Primera oportunidad gastada" : "Explicación Técnica"}
-                  </p>
-                  <p>{q.explanation}</p>
+                <div className={`p-6 rounded-2xl max-w-2xl w-full text-center border-2 ${selectedOpt === q.answer ? "bg-green-950/40 border-green-500 text-green-200" : "bg-red-950/40 border-red-500 text-red-200"}`}>
+                  {selectedOpt !== q.answer && (
+                    <div className="mb-4 pb-4 border-b border-red-500/30">
+                      <p className="text-red-400 font-black uppercase text-sm mb-2">¡Respuesta Incorrecta!</p>
+                      <p className="text-white text-xl font-bold">Respuesta Correcta: {q.options[q.answer]}</p>
+                    </div>
+                  )}
+                  <p className="font-bold mb-2 uppercase tracking-widest text-xs opacity-70 text-cyan-400">Teoría y Fundamento</p>
+                  <p className="text-lg leading-relaxed">{q.explanation}</p>
+                  
+                  {selectedOpt !== q.answer && mistakes === 1 && score === currentIdx && (
+                    <div className="mt-4 pt-4 border-t border-red-500/30">
+                      <p className="text-orange-400 font-bold italic animate-pulse">¡Has gastado tu única oportunidad extra!</p>
+                    </div>
+                  )}
                 </div>
                 { (selectedOpt === q.answer || (mistakes === 1 && score === currentIdx)) && (
                   <Button onClick={handleNext} className="bg-millionaire-cyan text-black hover:bg-cyan-400 font-black px-12 py-6 text-xl rounded-full">
-                    {selectedOpt === q.answer ? "CONTINUAR" : "USAR OPORTUNIDAD"}
+                    {selectedOpt === q.answer ? "CONTINUAR" : "ENTENDIDO, CONTINUAR"}
                   </Button>
                 )}
               </motion.div>
