@@ -241,6 +241,7 @@ export default function Quiz() {
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(300);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [mistakes, setMistakes] = useState(0);
   const [lifelines, setLifelines] = useState({ fiftyFifty: true, skip: true });
   const [hiddenOptions, setHiddenOptions] = useState<number[]>([]);
 
@@ -267,6 +268,7 @@ export default function Quiz() {
     setSelectedOpt(null);
     setIsAnswered(false);
     setScore(0);
+    setMistakes(0);
     setTimeLeft(300);
     setIsGameOver(false);
     setLifelines({ fiftyFifty: true, skip: true });
@@ -298,8 +300,11 @@ export default function Quiz() {
     if (selectedOpt === questions[currentIdx].answer) {
       setScore(score + 1);
     } else {
-      // En el millonario real, fallar termina el juego
-      setTimeout(() => setIsGameOver(true), 2000);
+      if (mistakes === 0) {
+        setMistakes(1);
+      } else {
+        setTimeout(() => setIsGameOver(true), 2000);
+      }
     }
   };
 
@@ -440,12 +445,14 @@ export default function Quiz() {
             ) : (
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col items-center gap-6">
                 <div className={`p-4 rounded-2xl max-w-2xl text-center border-2 ${selectedOpt === q.answer ? "bg-green-950/40 border-green-500 text-green-200" : "bg-red-950/40 border-red-500 text-red-200"}`}>
-                  <p className="font-bold mb-2 uppercase tracking-widest text-xs">Explicación Técnica</p>
+                  <p className="font-bold mb-2 uppercase tracking-widest text-xs">
+                    {selectedOpt === q.answer ? "Explicación Técnica" : mistakes === 1 && score === currentIdx ? "¡CUIDADO! Primera oportunidad gastada" : "Explicación Técnica"}
+                  </p>
                   <p>{q.explanation}</p>
                 </div>
-                { (selectedOpt === q.answer) && (
+                { (selectedOpt === q.answer || (mistakes === 1 && score === currentIdx)) && (
                   <Button onClick={handleNext} className="bg-millionaire-cyan text-black hover:bg-cyan-400 font-black px-12 py-6 text-xl rounded-full">
-                    CONTINUAR
+                    {selectedOpt === q.answer ? "CONTINUAR" : "USAR OPORTUNIDAD"}
                   </Button>
                 )}
               </motion.div>
